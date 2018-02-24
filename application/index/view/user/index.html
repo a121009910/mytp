@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" href="__STATIC__/bs/css/bootstrap.min.css">
+	<script src="__STATIC__/bs/js/bootstrap.min.js"></script>
+	<script src="__STATIC__/bs/js/jquery.min.js"></script>
+	<style>
+		a{
+			color: white;
+			text-decoration: none;
+		}
+		body{
+			padding-top: 50px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="panel panel-primary">
+		<div class="panel-heading">
+			<a href="/user/create"><button class="btn btn-success">添加用户</button></a>
+			<a href=""><button class="btn btn-info">查看用户</button></a>
+		</div>
+			<div class="panel-body">
+			<h2>用户列表</h2>
+				<table class="table table-bordered table-hover">
+					<th>ID</th>
+					<th>用户名</th>
+					<th>密码</th>
+					<th>年龄</th>
+					<th>修改</th>
+					<th>删除</th>
+					<th>Ajax删除</th>
+					
+					{volist name="data" id="value"}
+					<!-- <tr class="info"> -->
+					<tr>
+						<td>{$value.id}</td>
+						<td>{$value.name}</td>
+						<td>{$value.password}</td>
+						<td>{$value.age}</td>
+						<td><button class="btn btn-warning"><a href="/user/{$value.id}/edit">修改</a></button></td>
+						<td>
+						
+					<form action="/user/{$value.id}" method="post">
+						<input type="hidden" name="_method" value="delete">
+						<button class="btn btn-danger">删除</button>
+					</form>
+						</td>
+						<td><butten class="btn btn-info" onclick="del(this,{$value.id})" >Ajax删除</butten></td>	
+					</tr>
+					{/volist}
+					
+				</table>
+
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	// 删除数据方法
+	function del(obj,id){
+
+
+		$.post('{:url("ajax_del")}',{id:id},function(data){
+			if (data.statu==20) {
+				$(obj).parent().parent().remove();
+				// alert(data.info);
+
+			}else{
+				alert(data.info);
+			}
+
+		});
+
+
+
+
+		// // 发送sql语句
+
+		// $.post('{:url("ajax_del")}',{id:id},function(data){
+
+		// 	// 判断是否成功
+
+		// 	if (data.statu==200) {
+
+		// 		$(obj).parent().parent().remove();
+		// 		alert(data.info);
+
+
+		// 	}else{
+		// 		alert(data.info);
+
+		// 	}
+		// });
+	}
+</script>
+
+</html>
